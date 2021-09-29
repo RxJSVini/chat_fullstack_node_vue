@@ -6,7 +6,8 @@ module.exports = {
         return expressWinston.logger({
             transports:[
                 new winston.transports.File({
-                    filename:'log/server.log'
+                    filename:'log/server.log',
+                    level:'error'
                 })
             ],
             format:winston.format.combine(
@@ -42,4 +43,3 @@ module.exports = {
     
 
 }
-

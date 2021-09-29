@@ -9,7 +9,7 @@ const UserSchema = new Schema({
 
     email:{
         type:String,
-        require:true,
+        required:true,
         index:{
             unique:true
         }
@@ -23,7 +23,7 @@ const UserSchema = new Schema({
 
     password:{
         type:String,
-        require:true
+        required:true
     }
 
 })
