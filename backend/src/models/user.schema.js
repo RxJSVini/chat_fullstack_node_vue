@@ -17,16 +17,22 @@ const UserSchema = new Schema({
 
 
     name:{
-        
+        type:String,
+        require:true
+    },
+
+    password:{
+        type:String,
+        require:true
     }
 
-
-});
-
+})
 
 
+UserSchema.pre('Save', (next) =>{
+    this.password = bcryptjs.hashSync(this.password, saltRounds)
+    next()
+})
 
 
-
-
-
+module.exports = mongoose.model('Users', UserSchema);
