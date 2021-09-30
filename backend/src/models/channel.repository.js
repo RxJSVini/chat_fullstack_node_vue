@@ -1,11 +1,16 @@
 'use strict';
+const User = require('./channel.schema');
 
-
-const User = require('./user.schema');
-
-class UserRepository{
-    async find(query){
+class ChannelRepository {
+    async find(key){
         try {
+
+            let query = {};
+            if(key){
+                let key = new RegExp(key, 'i');
+                query.name = key;
+            }
+
             return await User.find(query).sort('name')
             .limit(20).exec()
         } catch (error) {
@@ -32,7 +37,7 @@ class UserRepository{
 
     async findByEmail(email){
         try {
-            return await User.findOne({email:email})
+            return await User.findOne({ where: {email:email}});
 
         } catch (error) {
             throw new Error(`Erro ao pesquisar email ${error.message}`);
@@ -64,6 +69,6 @@ class UserRepository{
 }
 
 
-module.exports = new UserRepository();
+module.exports = new ChannelRepository();
 
 

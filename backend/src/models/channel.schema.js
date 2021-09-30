@@ -1,3 +1,4 @@
+'use strict';
 const mongoose = require('mongoose');
 const bcryptjs = require('bcryptjs');
 const Schema = mongoose.Schema;
@@ -26,11 +27,13 @@ const ChannelSchema = new Schema({
         message:{
             type:String,
             required:true
+        },
+        dateTime:{
+            type:String,
+            required:true,
         }
     }
 
 })
-
-
 
 module.exports = mongoose.model('Users', ChannelSchema);

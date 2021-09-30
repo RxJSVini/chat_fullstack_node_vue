@@ -1,8 +1,7 @@
-const mongoose = require('mongoose');
-const bcryptjs = require('bcryptjs');
-const Schema = mongoose.Schema;
+'use strict';
 
-const saltRounds = 10;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 
 const UserSchema = new Schema({
@@ -29,10 +28,10 @@ const UserSchema = new Schema({
 })
 
 
-UserSchema.pre('Save', (next) =>{
+/*UserSchema.pre('Save', (next) =>{
     this.password = bcryptjs.hashSync(this.password, saltRounds)
     next()
-})
+})*/
 
 
 module.exports = mongoose.model('Users', UserSchema);
