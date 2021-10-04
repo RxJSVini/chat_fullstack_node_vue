@@ -33,4 +33,4 @@ class ChannelController{
 }
 
 
-module.exports = new UserController();
+module.exports = new ChannelController();

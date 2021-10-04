@@ -53,10 +53,10 @@ export default {
   methods: {
     async register() {
 
-      // const token = JSON.parse(localStorage.getItem('chatToken'));
-      // const headers = {
-      //   authorization:`Baerer ${token}`
-      // }
+      const token = JSON.parse(localStorage.getItem('chatToken'));
+      const headers = {
+        authorization:`Baerer ${token}`
+      }
 
       try {
         
@@ -69,12 +69,12 @@ export default {
           alert("Cadastrado com sucesso!!");
           sessionStorage.user = user.data;
            setTimeout(()=>{
-              this.$router.push({name:'login'});
+              this.$router.push("login");
             }, 300)
         
         } else if (user.status != 200) {
 
-          alert(user.status);
+          console.log(user);
 
   
         }
