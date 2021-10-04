@@ -1,8 +1,17 @@
 <template>
-  <div id="login">
+  <div id="register">
     <b-container fluid>
-      <b-form class="col-12 form-sing pt-5" @submit.prevent="login">
-        <h1 class="h3 mb-3 font-weigth-normal">Login ChatNode</h1>
+      <b-form class="col-12 form-sing pt-5" @submit.prevent="register">
+        <h1 class="h3 mb-3 font-weigth-normal">Registrar no ChatNode</h1>
+        <b-form-input
+          class="h3 mb-3 font-weigth-normal"
+          type="text"
+          v-model="nome"
+          placeholder="Digite seu nome aqui"
+          id="input-small"
+          size="sm"
+          required
+        ></b-form-input>
         <b-form-input
           class="h3 mb-3 font-weigth-normal"
           type="email"
@@ -21,7 +30,7 @@
           size="sm"
           required
         ></b-form-input>
-        <button>Entrar</button>&nbsp;
+        <button>Cadastrar</button>&nbsp;
       </b-form>
     </b-container>
   </div>
@@ -31,34 +40,43 @@
 import api from "../services/api";
 
 export default {
-  name: "Login",
+  name: "Register",
   components: {},
   data: () => {
     return {
+      nome: "",
       email: "",
       senha: "",
     };
   },
 
   methods: {
-    async login() {
+    async register() {
+
+      // const token = JSON.parse(localStorage.getItem('chatToken'));
+      // const headers = {
+      //   authorization:`Baerer ${token}`
+      // }
+
       try {
-        const user = await api.post("/authenticate", {
+        
+        const user = await api.post("/register", {
+          name: this.nome,
           email: this.email,
           password: this.senha,
-        });
-        if(user.status === 200){
-            sessionStorage.user = JSON.stringify(user.dat);
-
-            const response = user.data;
-            sessionStorage.user = JSON.stringify(user.data);
-            localStorage.setItem('chatToken', JSON.stringify(response.data.user.token));
-
-            // setTimeout(()=>{
-            //   this.$router.push('/login');
-            // })
+        }, {headers});
+        if (user.status === 200) {
+          alert("Cadastrado com sucesso!!");
+          sessionStorage.user = user.data;
+           setTimeout(()=>{
+              this.$router.push({name:'login'});
+            }, 300)
         
-        
+        } else if (user.status != 200) {
+
+          alert(user.status);
+
+  
         }
       } catch (error) {
         console.error(error);

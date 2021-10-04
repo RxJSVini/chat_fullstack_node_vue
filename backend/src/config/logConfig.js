@@ -51,7 +51,7 @@ module.exports =  {
             
         })
     },
-
+    
     getErrorLogger:function(){
         return expressWinston.errorLogger({
             transports:[

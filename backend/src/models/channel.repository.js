@@ -1,72 +1,108 @@
 'use strict';
-const User = require('./channel.schema');
 
-class ChannelRepository {
+
+const Channel = require('./channel.schema');
+const User = require('./user.schema');
+
+class ChannelRepository{
+
+    // async findAll(){
+    //     return await User.find({});
+    // }
+
+
     async find(key){
         try {
+            const query = {};
+            if(key) query.name = new RegExp(key, 'i')
 
-            let query = {};
-            if(key){
-                let key = new RegExp(key, 'i');
-                query.name = key;
-            }
+            return await User.find(query).populate({
+                path:'admin'
+            }).sort('name').limit(20).exec();
+            
 
-            return await User.find(query).sort('name')
-            .limit(20).exec()
         } catch (error) {
-            throw new Error(`Erro ao buscar usuário: ${error.message}`)
+            throw new Error(`Erro ao buscar canal: ${error.message}`)
         }
     }
-
-
 
     async findByName(name){
         try {
-            let query = {};
-            if(name){
-                let key = new RegExp(name, 'i');
-                query.name = key;
+            const query = {
+                name:name
             }
-            return await this.find(query);
+            return await this.findOne(query,{
+                history:{
+                    $slice:0
+                }
+            }).populate({
+                path:"admin"
+            }).exec();
         } catch (error) {
-            throw new Error(`Erro ao buscar usuário por nome : ${error.message}`)
+            throw new Error('Error ao tentar buscar  canal' + error.message)
         }
     }
 
-
-
-    async findByEmail(email){
+    async findHistoryByName(name, page){
         try {
-            return await User.findOne({ where: {email:email}});
-
-        } catch (error) {
-            throw new Error(`Erro ao pesquisar email ${error.message}`);
-        }
-    }
-    async findById(id){}
-
-
-
-    async save(data){
-        try {
-            if(!data._id){
-                return await User.create(data)
-            } else {
-                return await User.findByIdAndUpdate(data._id, data);
+            const query = {
+                name:name
             }
+
+            const inicio = 20 * page;
+            const fim = 20;
+            return await this.findOne(query, {
+                history:{
+                    $slice:[inicio, fim]
+                }
+            }).populate({
+                path:'admin'
+            }).exec()
+
         } catch (error) {
-            throw new Error(`Erro ao salvar usuário ${error.message}`);
-        }
-    }
-    async delete(id){
-        try {
-            return await User.findByIdAndDelete(id)
-        } catch (error) {
-            throw new Error(`Erro ao excluir usuário ${error.message}`);
+            throw new Error(`Error ao buscar histórico do canal :${error.message}`)
         }
     }
 
+
+
+
+    async findById(id){
+        try {
+            return await Channel.findById(id).exec()
+
+        } catch (error) {
+            throw new Error(`Erro ao tentar buscar por id:${error.message}`)
+        }
+    }
+
+
+
+  async save(data){
+      try {
+        if(!data._id){
+            return await Channel.create(data);
+        } else {
+            return await Channel.findByIdAndUpdate(data, data._id)
+        }
+      } catch (error) {
+          throw new Error(`Erro ao tentar salvar canal :${error.message}`)
+      }
+  }
+
+
+
+  async delete(channelName,id){
+    try {
+        const channel = await this.findByName(channelName)
+        return await Channel.findByIdAndDelete(id);
+    } catch (error) {
+        throw new Error(`Erro ao excluir canal ${error.message}`);
+    }
+  }
 }
+
+
 
 
 module.exports = new ChannelRepository();

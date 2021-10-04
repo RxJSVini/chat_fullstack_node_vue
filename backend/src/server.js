@@ -14,7 +14,7 @@ require('dotenv').config({});
 
 //CORS
 app.use(cors({
-    origin:'https://127.0.0.1:8080'
+    origin:'*'
 }));
 
 
@@ -26,13 +26,8 @@ app.use(logConfig.getLogger());
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 
-
-
 //ROTAS
 app.use('/api', require('./routes'));
-
-
-
 
 //TRAYAMENTO DE ERROS
 app.use(logConfig.getErrorLogger());

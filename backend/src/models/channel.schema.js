@@ -1,6 +1,5 @@
 'use strict';
 const mongoose = require('mongoose');
-const bcryptjs = require('bcryptjs');
 const Schema = mongoose.Schema;
 
 
@@ -36,4 +35,4 @@ const ChannelSchema = new Schema({
 
 })
 
-module.exports = mongoose.model('Users', ChannelSchema);
+module.exports = mongoose.model('Channel', ChannelSchema);

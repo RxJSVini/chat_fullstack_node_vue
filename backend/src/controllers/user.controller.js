@@ -10,6 +10,18 @@ require('dotenv').config({});
 
 
 class UserController{
+
+    async index(req, res, next){
+        try{
+            const users = await UserRepository.findAll();
+            return res.status(200).json(users);
+        }catch(error){
+            next(error);
+        }
+
+    }
+    
+
     async create(req, res, next){
         const saltRounds = 10;
         const { name, email, password  } = req.body;

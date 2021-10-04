@@ -4,6 +4,12 @@
 const User = require('./user.schema');
 
 class UserRepository{
+
+    async findAll(){
+        return await User.find({});
+    }
+
+
     async find(query){
         try {
             return await User.find(query).sort('name')
